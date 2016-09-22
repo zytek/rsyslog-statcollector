@@ -88,10 +88,12 @@ def gen_metrics(line):
   _stats_server = socket.getfqdn().replace('.','_')
   stat_msg = [raw_list[1].strip().translate(string.maketrans('-(', '_.'), '*/-)').strip(), ' '.join(raw_list[2:]).translate(string.maketrans('-', '_'), '()*/.-').strip()]
   stat_msg[0] = stat_msg[0].translate(string.maketrans(' ', '_'), ':')
-  stat_msg[1] = dict((k, int(v)) for k, v in [x.split('=') for x in stat_msg[1].strip().split(' ')])
+  stat_msg[1] = dict((k, v) for k, v in [x.split('=') for x in stat_msg[1].strip().split(' ')])
   for k, v in stat_msg[1].iteritems():
+    if k == "origin":
+      continue
     metric_name = stat_msg[0] + '.' + k
-    _stats_dict[metric_name] = v
+    _stats_dict[metric_name] = int(v)
   return (_stats_timestamp, _stats_server, _stats_dict)
 
 def submit(metric_root, filename, metrics, server):
