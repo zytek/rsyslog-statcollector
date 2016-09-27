@@ -85,7 +85,7 @@ def gen_metrics(line):
 
   raw_list = line.split(': ')
   _stats_timestamp = raw_list[0]
-  _stats_server = socket.getfqdn().replace('.','_')
+  _stats_server = socket.getfqdn().split('.')[0] # use short hostname when reporting metrics
   stat_msg = [raw_list[1].strip().translate(string.maketrans('-(', '_.'), '*/-)').strip(), ' '.join(raw_list[2:]).translate(string.maketrans('-', '_'), '()*/.-').strip()]
   stat_msg[0] = stat_msg[0].translate(string.maketrans(' ', '_'), ':')
   stat_msg[1] = dict((k, v) for k, v in [x.split('=') for x in stat_msg[1].strip().split(' ')])
